@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.lab04.model.Corso;
+import it.polito.tdp.lab04.model.MatricolaInesistenteException;
 import it.polito.tdp.lab04.model.Model;
 import it.polito.tdp.lab04.model.Studente;
 import javafx.collections.ObservableList;
@@ -75,11 +76,18 @@ public class FXMLController {
     	catch(NullPointerException npe)
     	{
     		txtAreaCorsi.setText("Errore! Seleziona un corso");
+    		return;
     	}
     	catch(NumberFormatException nfe)
     	{
     		txtAreaCorsi.setText("Errore! Devi inserire un numero");
-    	}	
+    		return;
+    	}
+    	catch(MatricolaInesistenteException mie)
+    	{
+    		txtAreaCorsi.setText("Matricola inesistente!");
+    		return;
+    	}
     }
 
     @FXML
@@ -98,23 +106,21 @@ public class FXMLController {
     	try
     	{
     		matricola=Integer.parseInt(txtMat.getText());
+    		s=this.model.getStudente(matricola);
+        	nomeMat.setText(s.getNome());
+    		cognomeMat.setText(s.getCognome());
+    		return;
     	}
     	catch(NumberFormatException nfe)
     	{
     		txtAreaCorsi.setText("Devi inserire un numero!");
     		return;
     	}
-    	s=this.model.getStudente(matricola);
-    	if(s!=null)
+    	catch(MatricolaInesistenteException mie)
     	{
-    		nomeMat.setText(s.getNome());
-    		cognomeMat.setText(s.getCognome());
+    		txtAreaCorsi.setText("Matricola inesistente!");
+    		return;
     	}
-    	else
-    	{
-    		nomeMat.setText("matricola non trovata");
-    	}
-    	
     }
 
     @FXML
@@ -128,10 +134,12 @@ public class FXMLController {
     		{
     			txtAreaCorsi.appendText(s.getMatricola()+" "+s.getNome()+" "+s.getCognome()+" "+s.getCds()+"\n");
     		}
+    		return;
     	}
     	catch(NullPointerException npe)
     	{
     		txtAreaCorsi.setText("Errore! Seleziona un corso");
+    		return;
     	}
     }
     
@@ -150,7 +158,11 @@ public class FXMLController {
     	catch(NumberFormatException nfe)
     	{
     		txtAreaCorsi.setText("Errore! Devi inserire un numero");
-    	}	
+    	}
+    	catch(MatricolaInesistenteException mie)
+    	{
+    		txtAreaCorsi.setText("Matricola inesistente!");
+    	}
     }
     
     @FXML

@@ -29,12 +29,12 @@ public class Model {
 		return corsoDAO.getStudentiIscrittiAlCorso(corso);
 	}
 	
-	public Studente getStudente(int matricola)
+	public Studente getStudente(int matricola) throws MatricolaInesistenteException
 	{
 		return studenteDAO.getNomeCognome(matricola);
 	}
 	
-	public List<Corso> getCorsiIscritto(int matricola)
+	public List<Corso> getCorsiIscritto(int matricola) throws MatricolaInesistenteException
 	{
 		return studenteDAO.getCorsiDiStudente(matricola);
 	}
